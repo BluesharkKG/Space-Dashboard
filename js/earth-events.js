@@ -1,4 +1,4 @@
-import { setupPage, showLoading, showError, fetchJSON, animateCount } from './config.js';
+import { setupPage, showError, fetchJSON, animateCount } from './config.js';
 
 const app = document.getElementById('app');
 setupPage('EARTH EVENTS');
@@ -8,8 +8,17 @@ const colors = {
   'Dust and Haze': '#9ca3af', Landslides: '#a16207', Manmade: '#a855f7', Snow: '#f8fafc', 'Temperature Extremes': '#fde047'
 };
 
+function renderSkeleton() {
+  app.innerHTML = `<section class='stats-row'>
+    ${Array.from({ length: 4 }).map(() => `<div class='card stat-card'><div class="skeleton" style="height:14px;width:85%;margin:.9rem auto .45rem;"></div><div class="skeleton" style="height:28px;width:55%;margin:0 auto 1rem;"></div></div>`).join('')}
+  </section>
+  <section class='card' style='padding:.8rem;margin-top:1rem;'><div style='display:flex;flex-wrap:wrap;gap:.5rem;'>${Array.from({ length: 8 }).map(() => `<div class="skeleton" style="width:90px;height:30px;border-radius:999px;"></div>`).join('')}</div></section>
+  <section class='card' style='margin-top:1rem;overflow:hidden;'><div class="skeleton" style="height:55vh;width:100%;"></div></section>
+  <section class='card' style='margin-top:1rem;padding:1rem;'><div class="skeleton" style="height:22px;width:180px;margin-bottom:.8rem;"></div>${Array.from({ length: 4 }).map(() => `<div class="skeleton" style="height:46px;width:100%;margin-bottom:.5rem;"></div>`).join('')}</section>`;
+}
+
 async function load() {
-  showLoading(app);
+  renderSkeleton();
   try {
     const [eventsData, catsData] = await Promise.all([
       fetchJSON('https://eonet.gsfc.nasa.gov/api/v3/events/geojson?status=open'),

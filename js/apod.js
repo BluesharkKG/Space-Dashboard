@@ -1,10 +1,37 @@
-import { NASA_KEY, setupPage, showLoading, showError, fetchJSON } from './config.js';
+import { NASA_KEY, setupPage, showError, fetchJSON } from './config.js';
 
 const app = document.getElementById('app');
 setupPage('APOD');
 
+function renderSkeleton() {
+  app.innerHTML = `
+    <div class="content-grid">
+      <section><div class="skeleton" style="width:100%;height:min(70vh,520px);"></div></section>
+      <section style="display:grid;grid-template-columns:2fr 1fr;gap:1rem;">
+        <article class="card" style="padding:1rem;">
+          <div class="skeleton" style="height:28px;width:75%;margin-bottom:.6rem;"></div>
+          <div class="skeleton" style="height:16px;width:35%;margin-bottom:.9rem;"></div>
+          <div class="skeleton" style="height:16px;width:100%;margin-bottom:.5rem;"></div>
+          <div class="skeleton" style="height:16px;width:100%;margin-bottom:.5rem;"></div>
+          <div class="skeleton" style="height:16px;width:90%;"></div>
+        </article>
+        <aside class="card" style="padding:1rem;">
+          <div class="skeleton" style="height:16px;width:100%;margin-bottom:.6rem;"></div>
+          <div class="skeleton" style="height:16px;width:100%;margin-bottom:.6rem;"></div>
+          <div class="skeleton" style="height:16px;width:80%;"></div>
+        </aside>
+      </section>
+      <section>
+        <div class="skeleton" style="height:22px;width:260px;margin-bottom:.8rem;"></div>
+        <div style="display:flex;gap:.8rem;overflow:auto;">
+          ${Array.from({ length: 5 }).map(() => `<div class="skeleton" style="width:150px;min-width:150px;height:90px;"></div>`).join('')}
+        </div>
+      </section>
+    </div>`;
+}
+
 async function load(selected) {
-  showLoading(app);
+  renderSkeleton();
   try {
     const [today, prev] = await Promise.all([
       fetchJSON(`https://api.nasa.gov/planetary/apod?api_key=${NASA_KEY}`),
