@@ -1,8 +1,19 @@
-import { setupPage, showLoading, showError, fetchJSON } from './config.js';
+import { setupPage, showError, fetchJSON } from './config.js';
 
 const app = document.getElementById('app');
 setupPage('NASA MEDIA');
 let page = 1, query = 'nebula', cache = [];
+
+function gridSkeleton(count = 9) {
+  return Array.from({ length: count }).map(() => `
+    <div class='card media-card' style='padding:0;overflow:hidden;'>
+      <div class='skeleton' style='width:100%;height:180px;border-radius:0;'></div>
+      <div style='padding:.75rem'>
+        <div class='skeleton' style='height:20px;width:100%;margin-bottom:.5rem;'></div>
+        <div class='skeleton' style='height:14px;width:45%;'></div>
+      </div>
+    </div>`).join('');
+}
 
 function card(item) {
   const d = item.data?.[0] || {};
@@ -16,7 +27,7 @@ function card(item) {
 async function search(reset=false) {
   if (reset) page = 1;
   const grid = document.getElementById('grid');
-  if (reset) showLoading(grid);
+  if (reset) grid.innerHTML = gridSkeleton();
   try {
     const url = `https://images-api.nasa.gov/search?q=${encodeURIComponent(query)}&media_type=image,video&page=${page}`;
     const json = await fetchJSON(url);

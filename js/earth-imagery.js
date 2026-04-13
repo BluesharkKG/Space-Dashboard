@@ -1,4 +1,4 @@
-import { NASA_KEY, setupPage, showLoading, showError } from './config.js';
+import { NASA_KEY, setupPage } from './config.js';
 
 const app = document.getElementById('app');
 setupPage('EARTH IMAGERY');
@@ -25,7 +25,11 @@ async function submit(e) {
   const lon = document.getElementById('lon').value;
   const date = document.getElementById('date').value;
   const out = document.getElementById('result');
-  showLoading(out);
+  out.innerHTML = `<div class='card' style='padding:1rem;margin-top:1rem;position:relative;'>
+    <div class='skeleton' style='width:100%;height:min(60vh,520px);margin-bottom:.6rem;'></div>
+    <div class='skeleton' style='height:24px;width:220px;position:absolute;left:1.5rem;bottom:4.2rem;'></div>
+    <div class='skeleton' style='height:18px;width:100%;'></div>
+  </div>`;
   try {
     const url = `https://api.nasa.gov/planetary/earth/imagery?lon=${encodeURIComponent(lon)}&lat=${encodeURIComponent(lat)}&date=${date}&dim=0.1&api_key=${NASA_KEY}`;
     const res = await fetch(url);

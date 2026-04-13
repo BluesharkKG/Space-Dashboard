@@ -1,4 +1,4 @@
-import { NASA_KEY, setupPage, showLoading, showError, fetchJSON, animateCount } from './config.js';
+import { NASA_KEY, setupPage, showError, fetchJSON, animateCount } from './config.js';
 
 const app = document.getElementById('app');
 setupPage('SPACE WEATHER');
@@ -24,8 +24,23 @@ const urls = {
 
 const badge = { FLR:'#ffb347', CME:'#a66cff', GST:'#ff4f4f', IPS:'#00f5ff', SEP:'#7cff8f', MPC:'#2dd4bf', RBE:'#ffe66d', HSS:'#60a5fa', NOTIFICATIONS:'#bdbdbd' };
 
+function renderSkeleton() {
+  app.innerHTML = `<section class="card" style="padding:1rem;margin-bottom:1rem;text-align:center;">
+    <div class="skeleton" style="width:220px;height:220px;border-radius:50%;margin:0 auto;"></div>
+    <div class="skeleton" style="height:28px;width:320px;max-width:100%;margin:.8rem auto .4rem;"></div>
+    <div class="skeleton" style="height:24px;width:220px;max-width:100%;margin:0 auto;"></div>
+  </section>
+  <section class="stats-row">
+    ${Array.from({ length: 4 }).map(() => `<div class="card stat-card"><div class="skeleton" style="height:14px;width:85%;margin:.9rem auto .45rem;"></div><div class="skeleton" style="height:28px;width:55%;margin:0 auto 1rem;"></div></div>`).join('')}
+  </section>
+  <section style="margin-top:1rem;">
+    <div style="display:flex;flex-wrap:wrap;gap:.5rem">${Array.from({ length: 9 }).map(() => `<div class="skeleton" style="height:30px;width:72px;border-radius:999px;"></div>`).join('')}</div>
+    <div style="margin-top:.8rem">${Array.from({ length: 4 }).map(() => `<div class="skeleton" style="height:74px;width:100%;margin-bottom:.6rem;"></div>`).join('')}</div>
+  </section>`;
+}
+
 async function load() {
-  showLoading(app);
+  renderSkeleton();
   try {
     const entries = Object.entries(urls);
     const result = await Promise.all(entries.map(([, u]) => fetchJSON(u)));

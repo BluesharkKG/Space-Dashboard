@@ -1,7 +1,25 @@
-import { NASA_KEY, setupPage, showLoading, showError, fetchJSON, animateCount } from './config.js';
+import { NASA_KEY, setupPage, showError, fetchJSON, animateCount } from './config.js';
 
 const app = document.getElementById('app');
 setupPage('ASTEROID WATCH');
+
+function renderSkeleton() {
+  app.innerHTML = `<section class="card" style="padding:1rem;"><div class="skeleton" style="width:100%;height:320px;"></div></section>
+  <section class="card" style="padding:1rem;margin-top:1rem;">
+    <div class="skeleton" style="height:16px;width:220px;margin-bottom:.45rem;"></div>
+    <div class="skeleton" style="height:14px;width:100%;border-radius:999px;margin-bottom:.45rem;"></div>
+    <div class="skeleton" style="height:16px;width:260px;"></div>
+  </section>
+  <section class="stats-row" style="margin-top:1rem;">
+    ${Array.from({ length: 4 }).map(() => `<div class="card stat-card"><div class="skeleton" style="height:14px;width:90%;margin:.9rem auto .45rem;"></div><div class="skeleton" style="height:28px;width:60%;margin:0 auto 1rem;"></div></div>`).join('')}
+  </section>
+  <section class="card" style="padding:1rem;margin-top:1rem;">
+    <div class="skeleton" style="height:28px;width:100%;margin-bottom:.5rem;"></div>
+    <div class="skeleton" style="height:28px;width:100%;margin-bottom:.5rem;"></div>
+    <div class="skeleton" style="height:28px;width:100%;margin-bottom:.5rem;"></div>
+    <div class="skeleton" style="height:28px;width:100%;"></div>
+  </section>`;
+}
 
 function flatten(feed) {
   return Object.values(feed).flat().map((o) => {
@@ -19,7 +37,7 @@ function flatten(feed) {
 }
 
 async function load() {
-  showLoading(app);
+  renderSkeleton();
   try {
     const start = new Date();
     const end = new Date(); end.setDate(start.getDate() + 7);
