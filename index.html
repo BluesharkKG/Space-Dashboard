@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ASTRALIS</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@300;400;600&family=Orbitron:wght@400;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/global.css" />
+  <link rel="stylesheet" href="css/landing.css" />
+</head>
+<body>
+  <main class="landing-shell">
+    <section class="landing-header">
+      <h1 class="logo">ASTRALIS</h1>
+      <p class="tagline">REAL-TIME INTELLIGENCE FROM BEYOND</p>
+      <div class="draw-line"></div>
+      <div class="landing-clock mono" id="landingClock"></div>
+    </section>
+
+    <section class="card-grid" id="cardGrid"></section>
+  </main>
+
+  <script type="module">
+    import { initBackground, startUTCClock } from './js/config.js';
+    initBackground();
+    startUTCClock(document.getElementById('landingClock'));
+    const cards = [
+      ['✦', 'APOD', "Daily astronomy image or video, direct from NASA\'s archive.", 'pages/apod.html'],
+      ['☀', 'SPACE WEATHER', 'Solar flares, CMEs, geomagnetic storms, and interplanetary shocks.', 'pages/space-weather.html'],
+      ['☄', 'ASTEROID WATCH', 'Near-Earth objects tracking size, velocity, and closest approach.', 'pages/asteroids.html'],
+      ['🌍', 'EARTH EVENTS', 'Live natural events — wildfires, volcanoes, storms, and floods.', 'pages/earth-events.html'],
+      ['📡', 'NASA MEDIA', "Search NASA\'s full image and video archive by mission or keyword.", 'pages/media.html'],
+      ['🛰', 'EARTH IMAGERY', 'Satellite view of any coordinate on Earth at any date.', 'pages/earth-imagery.html']
+    ];
+    const grid = document.getElementById('cardGrid');
+    cards.forEach(([icon, title, desc, link], idx) => {
+      const a = document.createElement('a');
+      a.className = 'nav-card';
+      a.href = link;
+      a.style.animationDelay = `${(idx + 1) * 0.1}s`;
+      a.innerHTML = `<div class="card-icon">${icon}</div><h3 class="card-title">${title}</h3><p class="card-desc">${desc}</p>`;
+      grid.appendChild(a);
+    });
+  </script>
+</body>
+</html>
